@@ -52,10 +52,9 @@ public:
 	UInputAction* MoveAction;
 
 protected:
-	float MovementGridUnitSize = 250.f;
+	float MovementGridUnitSize = 100.f;
 	int MovementGridWidth = 3;
 	int MovementGridHeight = 3;
-
 
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;
@@ -80,13 +79,11 @@ protected:
 
 private:
 	FVector CachedDestination;
-	FVector InitialLocation;
-	float MoveTime = .1f;
 
 	bool bIsTouch; // Is it a touch device
 	float FollowTime; // For how long it has been pressed
 
-	FIntVector2 CurrentGridIdx = FIntVector2(0, 0);
+	FIntVector2 CurrentGridIdx = FIntVector2(1, 1);
 
 };
 

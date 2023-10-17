@@ -11,8 +11,6 @@
 #include "InputActionValue.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
-#include "Math/UnrealMathVectorCommon.h"
-
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -34,17 +32,6 @@ void AFishGamePlayerController::BeginPlay()
 	{
 		Subsystem->AddMappingContext(DefaultMappingContext, 0);
 	}
-
-	// Get player pawn
-	APawn* PlayerPawn = GetPawn();
-	if (!IsValid(PlayerPawn))
-	{
-		UE_LOG(LogTemp, Error, TEXT("AFishGamePlayerController::BeginPlay: Invalid PlayerPawn"));
-		return;
-	}
-
-	InitialLocation = PlayerPawn->GetActorLocation();
-	CachedDestination = InitialLocation;
 }
 
 
@@ -63,17 +50,17 @@ void AFishGamePlayerController::SetupInputComponent()
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 	{
-		//// Setup mouse input events
-		//EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &AFishGamePlayerController::OnInputStarted);
-		//EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Triggered, this, &AFishGamePlayerController::OnSetDestinationTriggered);
-		//EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Completed, this, &AFishGamePlayerController::OnSetDestinationReleased);
-		//EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Canceled, this, &AFishGamePlayerController::OnSetDestinationReleased);
+		// Setup mouse input events
+		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &AFishGamePlayerController::OnInputStarted);
+		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Triggered, this, &AFishGamePlayerController::OnSetDestinationTriggered);
+		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Completed, this, &AFishGamePlayerController::OnSetDestinationReleased);
+		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Canceled, this, &AFishGamePlayerController::OnSetDestinationReleased);
 
-		//// Setup touch input events
-		//EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Started, this, &AFishGamePlayerController::OnInputStarted);
-		//EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Triggered, this, &AFishGamePlayerController::OnTouchTriggered);
-		//EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Completed, this, &AFishGamePlayerController::OnTouchReleased);
-		//EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Canceled, this, &AFishGamePlayerController::OnTouchReleased);
+		// Setup touch input events
+		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Started, this, &AFishGamePlayerController::OnInputStarted);
+		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Triggered, this, &AFishGamePlayerController::OnTouchTriggered);
+		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Completed, this, &AFishGamePlayerController::OnTouchReleased);
+		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Canceled, this, &AFishGamePlayerController::OnTouchReleased);
 
 		// Setup keyboard input events
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AFishGamePlayerController::OnMove);
@@ -113,7 +100,7 @@ void AFishGamePlayerController::OnMove(const FInputActionValue& Value)
 	}
 
 	// Update Cached Destination
-	CachedDestination = InitialLocation + FVector(0.f, CurrentGridIdx.X * MovementGridUnitSize, CurrentGridIdx.Y * MovementGridUnitSize);
+	CachedDestination = FVector(CurrentGridIdx.X * MovementGridUnitSize, CurrentGridIdx.Y * MovementGridUnitSize, 0.f);
 }
 
 void AFishGamePlayerController::MoveFishPawn()
@@ -126,8 +113,7 @@ void AFishGamePlayerController::MoveFishPawn()
 		return;
 	}
 
-	FVector Destination = FMath::Lerp(ControlledPawn->GetActorLocation(), CachedDestination, MoveTime);
-	ControlledPawn->SetActorLocation(Destination);
+	ControlledPawn->SetActorLocation(CachedDestination);
 }
 
 // Triggered every frame when the input is held down
