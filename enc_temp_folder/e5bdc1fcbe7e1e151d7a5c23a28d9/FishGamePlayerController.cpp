@@ -45,6 +45,9 @@ void AFishGamePlayerController::BeginPlay()
 		return;
 	}
 
+	InitialLocation = PlayerPawn->GetActorLocation();
+	CachedDestination = InitialLocation;
+
 	UWorld* World = GetWorld();
 	if (!IsValid(World))
 	{
@@ -68,13 +71,6 @@ void AFishGamePlayerController::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("AFishGamePlayerController::BeginPlay: Invalid Movement Grid"));
 		return;
 	}
-
-	MovementGridWidth = MovementGrid->GetGridWidth();	
-	MovementGridHeight = MovementGrid->GetGridHeight();
-
-	InitialLocation = MovementGrid->GetWorldLocationFromGridIndex(0, 0);
-	PlayerPawn->SetActorLocation(InitialLocation);
-	CachedDestination = InitialLocation;
 }
 
 
@@ -143,6 +139,9 @@ void AFishGamePlayerController::OnMove(const FInputActionValue& Value)
 	}
 
 	CachedDestination = MovementGrid->GetWorldLocationFromGridIndex(CurrentGridIdx.X, CurrentGridIdx.Y);
+
+	// Update Cached Destination
+	//CachedDestination = InitialLocation + FVector(0.f, CurrentGridIdx.X * MovementGridUnitSize, CurrentGridIdx.Y * MovementGridUnitSize);
 }
 
 void AFishGamePlayerController::MoveFishPawn()

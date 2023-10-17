@@ -22,8 +22,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	FVector GetWorldLocationFromGridIndex(int RowIndex, int ColumnIndex);
-	int GetGridWidth() const { return NumColumns; }
-	int GetGridHeight() const { return NumRows; }
+
 
 protected:
 	// Called when the game starts or when spawned

@@ -39,9 +39,31 @@ void AMovementGrid::Tick(float DeltaTime)
 
 }
 
-void GetWorldLocationFromGridIndex(int RowIdx, int ColumnIdx)
+FVector AMovementGrid::GetWorldLocationFromGridIndex(int RowIdx, int ColumnIdx)
 {
+	if (RowIdx > NumRows)
+	{
+		UE_LOG(LogTemp, Error, TEXT("AMovementGrid::GetWorldLocationFromGridIndex: RowIdx out of bounds"));
+		return FVector();
+	}
+	if (ColumnIdx > NumColumns)
+	{
+		UE_LOG(LogTemp, Error, TEXT("AMovementGrid::GetWorldLocationFromGridIndex: ColumnIdx out of bounds"));
+		return FVector();
+	}
 
+	// Get the corresponding index in the GridLocationMarkerMeshComponents array
+	int GridMarkerIdx = RowIdx * NumColumns + ColumnIdx;
+
+	if (!IsValid(GridLocationMarkerMeshComponents[GridMarkerIdx]))
+	{
+		UE_LOG(LogTemp, Error, TEXT("AMovementGrid::GetWorldLocationFromGridIndex: Invalid GridLocationMarkerMeshComponents[GridMarkerIdx]"));
+		return FVector();
+	}
+
+	FVector GridMarkerLocation = GridLocationMarkerMeshComponents[GridMarkerIdx]->GetComponentLocation();
+
+	return GridMarkerLocation;
 }
 
 

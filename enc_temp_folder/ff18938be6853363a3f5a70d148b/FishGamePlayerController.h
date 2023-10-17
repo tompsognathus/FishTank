@@ -53,6 +53,11 @@ public:
 	UInputAction* MoveAction;
 
 protected:
+	float MovementGridUnitSize = 250.f;
+	int MovementGridWidth = 3;
+	int MovementGridHeight = 3;
+
+
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;
 
@@ -76,8 +81,6 @@ protected:
 
 private:
 	AMovementGrid* MovementGrid;
-	int MovementGridWidth;
-	int MovementGridHeight;
 
 	FVector CachedDestination;
 	FVector InitialLocation;
