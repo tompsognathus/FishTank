@@ -39,19 +39,19 @@ void AMovementGrid::Tick(float DeltaTime)
 
 FVector AMovementGrid::GetWorldLocationFromGridIndex(int RowIdx, int ColumnIdx)
 {
-	if (RowIdx > NumColumns)
+	if (RowIdx > NumRows)
 	{
 		UE_LOG(LogTemp, Error, TEXT("AMovementGrid::GetWorldLocationFromGridIndex: RowIdx out of bounds"));
 		return FVector();
 	}
-	if (ColumnIdx > NumRows)
+	if (ColumnIdx > NumColumns)
 	{
 		UE_LOG(LogTemp, Error, TEXT("AMovementGrid::GetWorldLocationFromGridIndex: ColumnIdx out of bounds"));
 		return FVector();
 	}
 
 	// Get the corresponding index in the GridLocationMarkerMeshComponents array
-	int GridMarkerIdx = GetGridIndexFromGridCoordinates(RowIdx, ColumnIdx);
+	int GridMarkerIdx = RowIdx * NumColumns + ColumnIdx;
 
 	if (!IsValid(GridLocationMarkerMeshComponents[GridMarkerIdx]))
 	{
@@ -64,11 +64,6 @@ FVector AMovementGrid::GetWorldLocationFromGridIndex(int RowIdx, int ColumnIdx)
 	return GridMarkerLocation;
 }
 
-int AMovementGrid::GetGridIndexFromGridCoordinates(int RowIdx, int ColumnIdx)
-{
-	int GridIndex = ColumnIdx * NumColumns + RowIdx;
-	return GridIndex;
-}
 
 void AMovementGrid::CreateGridLocationMarkers()
 {
@@ -101,12 +96,12 @@ bool AMovementGrid::SetUpGridLocationMarkers()
 			UE_LOG(LogTemp, Error, TEXT("AMovementGrid::BeginPlay: Invalid GridLocationMarkerMeshComponents[idx]"));
 			return false;
 		}
-		GridLocationMarkerMeshComponents[idx]->SetWorldScale3D(FVector(0.1f, 0.2f, 0.2f));
-		
+
 		int RowIdx = idx / NumColumns;
 		int ColumnIdx = idx % NumColumns;
 
-		GridLocationMarkerMeshComponents[idx]->SetRelativeLocation(FVector(0.0f, ColumnIdx * 100.0f / (NumColumns - 1), RowIdx * 100.f / (NumRows - 1)));
+		GridLocationMarkerMeshComponents[idx]->SetRelativeLocation(FVector(0.0f, RowIdx * 100.f / (NumColumns - 1), ColumnIdx * 100.0f / (NumRows - 1)));
+		GridLocationMarkerMeshComponents[idx]->SetRelativeScale3D(FVector(0.1f, 0.1f, 0.1f));
 
 		if (!IsValid(GridMarkerMesh))
 		{

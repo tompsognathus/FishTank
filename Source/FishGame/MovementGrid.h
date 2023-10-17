@@ -22,6 +22,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	FVector GetWorldLocationFromGridIndex(int RowIndex, int ColumnIndex);
+	int GetGridIndexFromGridCoordinates(int RowIdx, int ColumnIdx);
 	int GetGridWidth() const { return NumColumns; }
 	int GetGridHeight() const { return NumRows; }
 
