@@ -23,6 +23,7 @@ void AMovementGrid::BeginPlay()
 {
 	Super::BeginPlay();
 
+	UE_LOG(LogTemp, Warning, TEXT("AMovementGrid::Constructor: GridLocationMarkerMeshComponents.Num() = %d"), GridLocationMarkerMeshComponents.Num());
 	CreateGridLocationMarkers();
 	bool SetupSucceeded = SetUpGridLocationMarkers();
 	if (!SetupSucceeded)
@@ -56,7 +57,10 @@ void AMovementGrid::CreateGridLocationMarkers()
 		GridMarkerMeshComponent->AttachToComponent(GridBoundaryMeshComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 		GridLocationMarkerMeshComponents.Add(GridMarkerMeshComponent);
-
+		// Log the index
+		UE_LOG(LogTemp, Warning, TEXT("AMovementGrid::BeginPlay: GridLocationMarkerMeshComponents[%d]"), idx);
+		// Log number of elements in grid array
+		UE_LOG(LogTemp, Warning, TEXT("AMovementGrid::BeginPlay: GridLocationMarkerMeshComponents.Num() = %d"), GridLocationMarkerMeshComponents.Num());
 	}
 }
 
