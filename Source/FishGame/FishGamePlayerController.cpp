@@ -157,6 +157,11 @@ void AFishGamePlayerController::MoveFishPawn()
 
 	FVector Destination = FMath::Lerp(ControlledPawn->GetActorLocation(), CachedDestination, MoveTime);
 	ControlledPawn->SetActorLocation(Destination);
+
+	FVector LookAtTarget = Destination + FVector(1.f, 0.f, 0.f) * 100.f;
+	// Rotate towards lookat target
+
+
 }
 
 // Triggered every frame when the input is held down
