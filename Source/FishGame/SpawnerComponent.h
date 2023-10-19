@@ -26,8 +26,7 @@ protected:
 
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawner")
-	float SpawnDistance = 500.0f;
+	float SpawnDistance = 250.f;
 
 
 };

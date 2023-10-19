@@ -21,7 +21,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	FVector GetWorldLocationFromGridIndex(int RowIndex, int ColumnIndex);
+	FVector GetWorldLocationFromGridIndex(int RowIdx, int ColumnIdx);
+
 	int GetGridIndexFromGridCoordinates(int RowIdx, int ColumnIdx);
 	int GetGridWidth() const { return NumColumns; }
 	int GetGridHeight() const { return NumRows; }
@@ -34,23 +35,24 @@ protected:
 	bool SetUpGridLocationMarkers();
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Grid")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Grid | Player")
 	int NumColumns;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Grid")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Grid | Player")
 	int NumRows;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Grid")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Grid | Player")
 	UStaticMeshComponent* GridBoundaryMeshComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Grid")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Grid | Player")
 	UStaticMesh* GridMarkerMesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Grid")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Grid | Player")
 	UMaterial* GridMarkerMaterial;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Grid")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Grid | Player")
 	TArray<UStaticMeshComponent*> GridLocationMarkerMeshComponents = TArray<UStaticMeshComponent*>();
+
 
 
 };
