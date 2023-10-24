@@ -18,6 +18,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void SetMovementVelocity(FVector MovementDirection, float MovementSpeed);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -27,6 +29,19 @@ protected:
 	int Value = 10;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	bool DoesRotate = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	float RotationSpeed = 10.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	UStaticMeshComponent* MeshComponent;
+
+private:
+	void Rotate(float DeltaTime);
+	void Move(float DeltaTime);
+
+private:
+	FVector MovementVelocity = FVector::Zero();
 	
 };

@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "SpawnerComponent.generated.h"
 
+class AItem;
+class AMovementGrid;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class FISHGAME_API USpawnerComponent : public UActorComponent
@@ -19,6 +21,7 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	void SpawnItem(TSubclassOf<AItem> Item, FIntVector2 SpawnGridCoordinates);
 
 protected:
 	// Called when the game starts
@@ -26,7 +29,14 @@ protected:
 
 
 protected:
-	float SpawnDistance = 250.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawner")
+	float SpawnDistance = 2500.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawner")
+	TSubclassOf<AItem> ItemToSpawn;
 
+private:
+	float TimeUntilNextSpawn = 1.f;
+	AActor* ParentActor;
+	AMovementGrid* MovementGrid;
 };
